@@ -1,7 +1,7 @@
 {
   "name": "travelplanner",
   "version": "0.1.0",
-  "homepage": "https://pg188.github.io/travelPlanner",
+  "homepage": "http://prakhargarg.me/travelPlanner",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
