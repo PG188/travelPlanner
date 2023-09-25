@@ -8,6 +8,7 @@ function App() {
 
   const addContact = (newContact) => {
     setContacts([...contacts, newContact]);
+    console.log(newContact)
   };
 
   const editContact = (editedContact) => {
