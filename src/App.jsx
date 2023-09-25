@@ -1,44 +1,52 @@
 import React, { useState } from 'react';
-import ContactForm from './ContactForm';
-import ContactList from './ContactList';
 
-function App() {
-  const [contacts, setContacts] = useState([]);
-  const [selectedContact, setSelectedContact] = useState(null);
+const config = [
+  {
+    name: 'Frontend Development',
+    id: 'frontend_development'
+  },
+  {
+    name: 'Software Development',
+    id: 'software_development'
+  },
+  {
+    name: 'Cloud Services',
+    id: 'cloud_services'
+  },
+  {
+    name: 'Machine Learning',
+    id: 'machine_learning'
+  }
+];
 
-  const addContact = (newContact) => {
-    setContacts([...contacts, newContact]);
-    console.log(newContact)
+const Page = () => {
+  const [hasVoted, setHasVoted] = useState(false);
+  const [error, setError] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [results, setResults] = useState(null);
+
+
+  const handleClick = async (id) => {
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(`/api/create-vote?id=${id}`);
+      if (!response.ok) {
+        throw new Error(response.statusText);
+      }
+      const result = await response.json();
+      setResults(result);
+      setIsSubmitting(false);
+      setHasVoted(true);
+    } catch (error) {
+      setIsSubmitting(false);
+      setError({
+        error: true,
+        message: error.message
+      });
+    }
   };
 
-  const editContact = (editedContact) => {
-    const updatedContacts = contacts.map((contact) =>
-      contact === selectedContact ? editedContact : contact
-    );
-    setContacts(updatedContacts);
-    setSelectedContact(null);
-  };
+  return null;
+};
 
-  const cancelEdit = () => {
-    setSelectedContact(null);
-  };
-
-  const handleEditClick = (contact) => {
-    setSelectedContact(contact);
-  };
-
-  return (
-    <div className="App">
-      <h1>Contact Information</h1>
-      <ContactForm
-        onAddContact={addContact}
-        selectedContact={selectedContact}
-        onEditContact={editContact}
-        onCancelEdit={cancelEdit}
-      />
-      <ContactList contacts={contacts} onEditClick={handleEditClick} />
-    </div>
-  );
-}
-
-export default App;
+export default Page;
